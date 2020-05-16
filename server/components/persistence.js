@@ -87,8 +87,10 @@ const scope = module.exports = {
       return content[url]
     }
   },
-
-  getShrankURL: (domain, shrankDomain, url, shrankURL) => {
+  /**
+   * Gets the shark url from the given domain and url
+   */
+  getShrinkURL: (domain, shrankDomain, url, shrankURL) => {
     const persistedDomains = scope.readDomainsFile()
     let internalPath = null
     if (!persistedDomains[domain]) {
@@ -99,7 +101,10 @@ const scope = module.exports = {
     internalPath = scope.createUrlIfNotExist(shrankDomain, url, shrankURL)
     return `${shrankDomain}/${internalPath}`
   },
-
+  /**
+   * Adds the url status to the path
+   * @param {String} url
+   */
   addURLStatus: (url) => {
     if (isDevelopment) {
       const folder = `./public/${url}`
@@ -111,7 +116,11 @@ const scope = module.exports = {
       }))
     }
   },
-
+  /**
+   * This method changes the url status
+   * @param {String} url
+   * @param {Boolean} available
+   */
   changeURLStatus: (url, available) => {
     if (isDevelopment) {
       const statusFile = `./public/${url}/status.json`
@@ -121,6 +130,7 @@ const scope = module.exports = {
         }))
       }
     }
+    return available
   },
   /**
    * Returns the status of the given path
@@ -167,6 +177,11 @@ const scope = module.exports = {
     }
     return stats
   },
+  /**
+   * This method adds a visit to a given url
+   * @param {String} url
+   * @param {Object} meta
+   */
   addURLVisit: (url, meta) => {
     let stats = null
     if (isDevelopment) {

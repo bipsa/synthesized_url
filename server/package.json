@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "fix": "standard --fix"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^26.0.1",
     "nodemon": "^2.0.4",
     "standard": "^14.3.4"
+  },
+  "standard": {
+    "ignore": [
+      "*.test.js"
+    ]
   }
 }
