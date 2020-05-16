@@ -15,6 +15,9 @@ const scope = module.exports = {
     }
     scope.createDomainFileIfNotExist()
   },
+  /**
+   * Creates the domain file if not exists
+   */
   createDomainFileIfNotExist: () => {
     if (isDevelopment) {
       if (!existsSync('./public/domains.json')) {
@@ -77,6 +80,8 @@ const scope = module.exports = {
       }
       if (!existsSync(`${folder}/${shrankURL}`)) {
         mkdirSync(`${folder}/${shrankURL}`)
+        scope.addURLStatus(`${domain}/${shrankURL}`)
+        scope.addURLStats(`${domain}/${shrankURL}`)
       }
       writeFileSync(`${folder}/urls.json`, JSON.stringify(content))
       return content[url]
@@ -95,11 +100,85 @@ const scope = module.exports = {
     return `${shrankDomain}/${internalPath}`
   },
 
-  addStatus: (shrankDomain, shrankURL) => {
-
+  addURLStatus: (url) => {
+    if (isDevelopment) {
+      const folder = `./public/${url}`
+      if (!existsSync(folder)) {
+        mkdirSync(folder)
+      }
+      writeFileSync(`${folder}/status.json`, JSON.stringify({
+        available: true
+      }))
+    }
   },
 
-  addDomainStat: (domain, meta) => {
-
+  changeURLStatus: (url, available) => {
+    if (isDevelopment) {
+      const statusFile = `./public/${url}/status.json`
+      if (existsSync(statusFile)) {
+        writeFileSync(statusFile, JSON.stringify({
+          available
+        }))
+      }
+    }
+  },
+  /**
+   * Returns the status of the given path
+   * @param {String} url
+   * @returns {Boolean}
+   */
+  getURLStatus: (url) => {
+    let status = false
+    if (isDevelopment) {
+      const statusFile = `./public/${url}/status.json`
+      if (existsSync(statusFile)) {
+        const data = readFileSync(statusFile)
+        const content = JSON.parse(data)
+        status = content.available
+      }
+    }
+    return status
+  },
+  /**
+   * Adds the stats for the given shorten URL
+   * @param {String} url
+   */
+  addURLStats: (url) => {
+    if (isDevelopment) {
+      const folder = `./public/${url}`
+      writeFileSync(`${folder}/stats.json`, JSON.stringify({
+        total: 0,
+        visits: []
+      }))
+    }
+  },
+  /**
+   * Get url stats from the given url
+   * @param {String} url
+   */
+  getURLStats: (url) => {
+    let stats = null
+    if (isDevelopment) {
+      const statsFile = `./public/${url}/stats.json`
+      if (existsSync(statsFile)) {
+        const data = readFileSync(statsFile)
+        stats = JSON.parse(data)
+      }
+    }
+    return stats
+  },
+  addURLVisit: (url, meta) => {
+    let stats = null
+    if (isDevelopment) {
+      const statsFile = `./public/${url}/stats.json`
+      if (existsSync(statsFile)) {
+        const data = readFileSync(statsFile)
+        stats = JSON.parse(data)
+        stats.total = stats.total++
+        stats.visits.push(meta)
+        writeFileSync(statsFile, JSON.stringify(stats))
+      }
+    }
+    return stats
   }
 }

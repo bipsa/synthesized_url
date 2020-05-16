@@ -1,6 +1,6 @@
 'use strict'
 
-const { getShrankURL } = require('./persistence')
+const { getShrankURL, getURLStatus, getURLStats, addURLVisit } = require('./persistence')
 
 /**
  * This method generates a string with the given complexity
@@ -40,6 +40,10 @@ module.exports = (url) => {
     }
   }
   const finalPath = getShrankURL(domain, shrankDomain, url, random())
-  console.log('>>>>>????', finalPath)
+  addURLVisit(finalPath, {
+    ip: '0.0.0.1',
+    date: new Date()
+  })
+  console.log('>>>>>????', finalPath, getURLStatus(finalPath), getURLStats(finalPath))
   return urlCompressed
 }
