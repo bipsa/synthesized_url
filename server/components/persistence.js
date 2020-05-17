@@ -189,7 +189,7 @@ const scope = module.exports = {
       if (existsSync(statsFile)) {
         const data = readFileSync(statsFile)
         stats = JSON.parse(data)
-        stats.total = stats.total++
+        stats.total = stats.total + 1
         stats.visits.push(meta)
         writeFileSync(statsFile, JSON.stringify(stats))
       }

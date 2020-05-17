@@ -2,7 +2,9 @@
 
 const inquirer = require('inquirer')
 const rest = require('unirest')
-const args = process.argv.slice(2);
+const pluralize = require('pluralize')
+const table = require('console.table')
+const args = process.argv.slice(2)
 
 const questions = [
   {
@@ -32,6 +34,32 @@ const shortenURL = (url) => {
   })
 }
 
+const statsURL = (url) => {
+  request(`${url}stats/`, {
+    url: url
+  }, 'GET', (error, response) => {
+    if (!error) {
+      console.log(`${url} has open ${response.total} ${pluralize('times', response.total)}.`)
+      if (response.total > 0 ){
+        if (response.visits.length > 2) {
+          console.table(response.visits.slice(Math.max(response.visits.length - 2, 0)))
+        }
+      }
+      console.log('View more...') 
+    }
+  })
+}
+
+const disableEnableURL = (url, enable) => {
+  request(`${url}${(enable)?'enable':'disable'}/`, {
+    url: url
+  }, 'GET', (error, response) => {
+    if (!error) {
+      console.log(response)
+    }
+  })
+}
+
 const findArgument = (key) => {
   for (let i=0; i<args.length; i++) {
     if (args[i].trim() === key) {
@@ -51,11 +79,17 @@ const findValueForKey = (key) => {
   return value
 }
 
-if (!findArgument('--url')){
+if (findArgument('stats')){
+  statsURL(findValueForKey('stats'))
+} else if (findArgument('disable')) {
+  disableEnableURL(findValueForKey('disable'), false)
+} else if (findArgument('enable')) {
+  disableEnableURL(findValueForKey('enable'), true)
+} else if (!findArgument('shorten')) {
   inquirer.prompt(questions).then(async (answers) => {
     shortenURL(answers.url)
   })
-} else {
-  shortenURL(findValueForKey('--url'))
+} else if (findArgument('shorten')) {
+  shortenURL(findValueForKey('shorten'))
 }
 
