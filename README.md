@@ -131,7 +131,19 @@ curl --location --request GET 'https://g6m381qxf5.execute-api.us-east-1.amazonaw
 2. Add two env variables NODE_ENV, and domain (the domain is used to generate the URL, the example uses the default DNS provided by API gateway)
 3. Add permission for S3 to the lambda role (read and write)
 
-<img src="images/1.png" width="300">
+<img src="images/1.png" width="500">
 
 #### Create the API
+1. Create the api with any name you want, of course following the best practices
+2. Create shorten resource
+3. Create a post method and attached the lambda
+4. Create {domain} {url} {action} resources
+5. Add get method to url and action
+6. Enable sending the user headers in order to get IP address and actions
+
+<img src="images/2.png" width="500">
+
+#### Create Bucket
+1. Create the bucket and name it `synthesized-url`
+2. You don't need public access
 
