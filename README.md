@@ -13,8 +13,12 @@ The server application uses NodeJS. As any other Node project, install dependenc
 #### Available endpoints
 The following endpoints are exposed:
 
-##### Shorten url
-Shorts the given  
+##### Short url
+Short the given URL. This is a post a request. It takes the following process:
+1. The method breaks the given URL into parts domain and  URL. The objective is to increase the number of URLs that the system can store.
+2. The shorten method creates a file to identify domains, URLs, also for status and stats.
+3. If the URL has created already, it returns the path.
+
 ```shell
 curl --location --request POST 'http://localhost:3000/shorten/' \
 --header 'Content-Type: application/json' \
