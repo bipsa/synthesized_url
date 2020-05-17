@@ -16,7 +16,6 @@ app.use(parser.json())
 app.get(/^\/(.{1,3})\/(.{1,3})\/(?:\/(?=$))?$/i, (request, res) => {
   const normalizedURL = `${request.params[0]}/${request.params[1]}`
   const isEnable = status(normalizedURL)
-  console.log(isEnable)
   if (!isEnable) {
     res.status(400)
     return res.send({
