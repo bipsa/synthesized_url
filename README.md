@@ -99,3 +99,39 @@ The CLI application uses NodeJS. Also, install dependencies first `npm install`.
 2. `node index stats http://localhost:3000/rp7/Sxz/` Returns the stats from the given URL.
 3. `node index disable http://localhost:3000/rp7/Sxz/` Disables the URL.
 4. `node index enable http://localhost:3000/rp7/Sxz/` Enable the URL.
+
+## Run the project on AWS
+The method used in development gives the flexibility to port the project to AWS with not much effort, but additional configuration is required.
+`lambda.js` contains the code to run the project on AWS using Lambda, APIGateway, and S3. Of course, the stack could be evaluated on production by using a faster data method, but S3 gives Multiple regions, and different cache methods out of the box.
+
+This is the request for shorten on AWS
+
+```shell
+curl --location --request POST 'https://g6m381qxf5.execute-api.us-east-1.amazonaws.com/Synthesized-Stage/shorten/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "url": "https://www.skillshare.com/classes/Understanding-Web-Development-A-Beginners-Guide-to-the-Web/1755504373?via=logged-in-home-row-recommended"
+}'
+```
+
+This is the view request - Note: Some configuration is missing on the API Gateway to allow redirection :(
+```shell
+curl --location --request GET 'https://g6m381qxf5.execute-api.us-east-1.amazonaws.com/Synthesized-Stage/hlF/87C/'
+```
+
+The request to get the actions, by changing 'stats' for 'enable' or 'disable' you get those actions
+```shell
+curl --location --request GET 'https://g6m381qxf5.execute-api.us-east-1.amazonaws.com/Synthesized-Stage/hlF/87C/stats'
+```
+
+### What do you need to configure on AWS?
+
+#### Upload the lambda
+1. You can give any name to the lambda function
+2. Add two env variables NODE_ENV, and domain (the domain is used to generate the URL, the example uses the default DNS provided by API gateway)
+3. Add permission for S3 to the lambda role (read and write)
+
+<img src="images/1.png" width="300">
+
+#### Create the API
+
