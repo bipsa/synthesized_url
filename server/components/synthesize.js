@@ -2,7 +2,7 @@
 
 const {
   getShrinkURL, getURLStatus, getURLStats,
-  addURLVisit, changeURLStatus
+  addURLVisit, changeURLStatus, getHiddenURL
 } = require('./persistence')
 
 /**
@@ -25,6 +25,9 @@ const random = (complexity) => {
 }
 
 module.exports = {
+  getURL: (url) => {
+    return getHiddenURL(url)
+  },
   statusURL: (url) => {
     return getURLStatus(url)
   },
@@ -34,11 +37,12 @@ module.exports = {
   statsURL: (url) => {
     return getURLStats(url)
   },
-  visit: (url) => {
-    return addURLVisit(url, {
-      ip: '0.0.0.1',
+  visitURL: (url, ip) => {
+    const response = addURLVisit(url, {
+      ip,
       date: new Date()
     })
+    return response
   },
   shrinkURL: (url) => {
     const urlPartsRegex = /^http.(.*)(\/\/)(.+(.*).(\.)(.{1,3}))(\/|.*$)(.*)/

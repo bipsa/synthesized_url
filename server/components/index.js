@@ -2,9 +2,9 @@
 
 const {
   shrinkURL, statsURL, statusURL,
-  changeStatusURL
+  changeStatusURL, visitURL, getURL
 } = require('./synthesize')
-const domain = process.env.domain || 'https://local.sh'
+const domain = process.env.domain || 'http://localhost:3000'
 
 const scope = module.exports = {
   /**
@@ -25,8 +25,11 @@ const scope = module.exports = {
     let shorten = null
     if (scope.validateURL(url)) {
       shorten = shrinkURL(url)
+      url = `${domain}/${shorten}/`
+    } else {
+      url = null
     }
-    return `${domain}/${shorten}/`
+    return url
   },
   /**
    * This method gives the status for the given url
@@ -77,5 +80,20 @@ const scope = module.exports = {
     }
     status = changeStatusURL(url, true)
     return status
+  },
+  /**
+   * If the URL is created and it is disabled, this method enables the URL.
+   * @param {String} url
+   */
+  view: (url, ip) => {
+    let stats = null
+    if (scope.validateURL(url)) {
+      url = shrinkURL(url)
+    }
+    stats = visitURL(url, ip)
+    if (stats) {
+      stats.url = getURL(url)
+    }
+    return stats
   }
 }

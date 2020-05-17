@@ -195,5 +195,23 @@ const scope = module.exports = {
       }
     }
     return stats
+  },
+  getHiddenURL: (url) => {
+    let finalURL = null
+    if (isDevelopment) {
+      const urlsPath = `./public/${url}/../urls.json`
+      if (existsSync(urlsPath)) {
+        const data = readFileSync(urlsPath)
+        const urls = JSON.parse(data)
+        for (const property in urls) {
+          // This need to be perfected, due to a weak validation
+          if (url.indexOf(urls[property]) !== -1) {
+            finalURL = property
+            break
+          }
+        }
+      }
+    }
+    return finalURL
   }
 }
