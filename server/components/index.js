@@ -21,10 +21,10 @@ const scope = module.exports = {
    * @param {String} url
    * @returns {String}
    */
-  shorten: (url) => {
+  shorten: async (url) => {
     let shorten = null
     if (scope.validateURL(url)) {
-      shorten = shrinkURL(url)
+      shorten = await shrinkURL(url)
       url = `${domain}/${shorten}/`
     } else {
       url = null
@@ -49,50 +49,50 @@ const scope = module.exports = {
    * @param {String} url
    * @returns {Object}
    */
-  stats: (url) => {
+  stats: async (url) => {
     let stats = null
     if (scope.validateURL(url)) {
-      url = shrinkURL(url)
+      url = await shrinkURL(url)
     }
-    stats = statsURL(url)
+    stats = await statsURL(url)
     return stats
   },
   /**
    * Disables the given URL if it is found
    * @param {String} url
    */
-  disable: (url) => {
+  disable: async (url) => {
     let status = null
     if (scope.validateURL(url)) {
-      url = shrinkURL(url)
+      url = await shrinkURL(url)
     }
-    status = changeStatusURL(url, false)
+    status = await changeStatusURL(url, false)
     return status
   },
   /**
    * If the URL is created and it is disabled, this method enables the URL.
    * @param {String} url
    */
-  enable: (url) => {
+  enable: async (url) => {
     let status = null
     if (scope.validateURL(url)) {
-      url = shrinkURL(url)
+      url = await shrinkURL(url)
     }
-    status = changeStatusURL(url, true)
+    status = await changeStatusURL(url, true)
     return status
   },
   /**
    * If the URL is created and it is disabled, this method enables the URL.
    * @param {String} url
    */
-  view: (url, ip) => {
+  view: async (url, ip) => {
     let stats = null
     if (scope.validateURL(url)) {
-      url = shrinkURL(url)
+      url = await shrinkURL(url)
     }
-    stats = visitURL(url, ip)
+    stats = await visitURL(url, ip)
     if (stats) {
-      stats.url = getURL(url)
+      stats.url = await getURL(url)
     }
     return stats
   }

@@ -25,26 +25,26 @@ const random = (complexity) => {
 }
 
 module.exports = {
-  getURL: (url) => {
-    return getHiddenURL(url)
+  getURL: async (url) => {
+    return await getHiddenURL(url)
   },
-  statusURL: (url) => {
-    return getURLStatus(url)
+  statusURL: async (url) => {
+    return await getURLStatus(url)
   },
-  changeStatusURL: (url, status) => {
-    return changeURLStatus(url, status)
+  changeStatusURL: async (url, status) => {
+    return await changeURLStatus(url, status)
   },
-  statsURL: (url) => {
-    return getURLStats(url)
+  statsURL: async (url) => {
+    return await getURLStats(url)
   },
-  visitURL: (url, ip) => {
-    const response = addURLVisit(url, {
+  visitURL: async (url, ip) => {
+    const response = await addURLVisit(url, {
       ip,
       date: new Date()
     })
     return response
   },
-  shrinkURL: (url) => {
+  shrinkURL: async (url) => {
     const urlPartsRegex = /^http.(.*)(\/\/)(.+(.*).(\.)(.{1,3}))(\/|.*$)(.*)/
     const parts = url.match(urlPartsRegex)
     let finalPath = null
@@ -59,7 +59,7 @@ module.exports = {
         } else {
           domain = `${domainPart[0]}.${domainPart[1]}`
         }
-        finalPath = getShrinkURL(domain, shrankDomain, url, random())
+        finalPath = await getShrinkURL(domain, shrankDomain, url, random())
       }
     }
     return finalPath

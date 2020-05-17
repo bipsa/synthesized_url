@@ -13,9 +13,9 @@ const port = process.env.port || 3000
 app.use(parser.urlencoded({ extended: false }))
 app.use(parser.json())
 
-app.get(/^\/(.{1,3})\/(.{1,3})\/(?:\/(?=$))?$/i, (request, res) => {
+app.get(/^\/(.{1,3})\/(.{1,3})\/(?:\/(?=$))?$/i, async (request, res) => {
   const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const isEnable = status(normalizedURL)
+  const isEnable = await status(normalizedURL)
   if (!isEnable) {
     res.status(400)
     return res.send({
@@ -23,7 +23,7 @@ app.get(/^\/(.{1,3})\/(.{1,3})\/(?:\/(?=$))?$/i, (request, res) => {
     })
   }
   const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress
-  const response = view(normalizedURL, ip)
+  const response = await view(normalizedURL, ip)
   if (response) {
     res.redirect(response.url)
   } else {
@@ -34,9 +34,9 @@ app.get(/^\/(.{1,3})\/(.{1,3})\/(?:\/(?=$))?$/i, (request, res) => {
   }
 })
 
-app.get(/^\/(.{1,3})\/(.{1,3})\/stats\/?$/i, (request, res) => {
+app.get(/^\/(.{1,3})\/(.{1,3})\/stats\/?$/i, async (request, res) => {
   const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const response = stats(normalizedURL)
+  const response = await stats(normalizedURL)
   if (response) {
     return res.send(response)
   }
@@ -46,9 +46,9 @@ app.get(/^\/(.{1,3})\/(.{1,3})\/stats\/?$/i, (request, res) => {
   })
 })
 
-app.get(/^\/(.{1,3})\/(.{1,3})\/enable\/?$/i, (request, res) => {
+app.get(/^\/(.{1,3})\/(.{1,3})\/enable\/?$/i, async (request, res) => {
   const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const response = enable(normalizedURL)
+  const response = await enable(normalizedURL)
   if (response !== null) {
     return res.send({
       response
@@ -60,9 +60,9 @@ app.get(/^\/(.{1,3})\/(.{1,3})\/enable\/?$/i, (request, res) => {
   })
 })
 
-app.get(/^\/(.{1,3})\/(.{1,3})\/disable\/?$/i, (request, res) => {
+app.get(/^\/(.{1,3})\/(.{1,3})\/disable\/?$/i, async (request, res) => {
   const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const response = disable(normalizedURL)
+  const response = await disable(normalizedURL)
   if (response !== null) {
     return res.send({
       response
@@ -74,7 +74,7 @@ app.get(/^\/(.{1,3})\/(.{1,3})\/disable\/?$/i, (request, res) => {
   })
 })
 
-app.post('/shorten/', (request, res) => {
+app.post('/shorten/', async (request, res) => {
   let response = {}
   if (!request.body.url) {
     res.status(400)
@@ -83,7 +83,7 @@ app.post('/shorten/', (request, res) => {
     }
   } else {
     res.status(200)
-    const shortenURL = shorten(request.body.url)
+    const shortenURL = await shorten(request.body.url)
     if (shortenURL !== null) {
       response = {
         url: shortenURL
