@@ -13,7 +13,7 @@ The server application uses NodeJS. As any other Node project, install dependenc
 #### Available endpoints
 The following endpoints are exposed:
 
-##### Short url
+##### Short URL
 Short the given URL. This is a post a request. It takes the following process:
 1. The method breaks the given URL into parts domain and  URL. The objective is to increase the number of URLs that the system can store.
 2. The shorten method creates a file to identify domains, URLs, also for status and stats.
@@ -29,10 +29,66 @@ curl --location --request POST 'http://localhost:3000/shorten/' \
 ###### Response
 ```js
 {
-    "url": "http://localhost:3000/oOJ/q7x/"
+  "url": "http://localhost:3000/oOJ/q7x/"
 }
 ```
 
+##### View URL
+This endpoint redirects the user to the hidden URL
+```shell
+curl --location --request GET 'http://localhost:3000/oOJ/q7x/'
+```
+###### Response if the URL has been disabled
+The http code sent is 400
+```js
+{
+  "message": "URL is not available."
+}
+```
 
-##### Short url
-Short the given URL. This is a post a request. It takes the following process:
+##### Disable URL
+This endpoint disable an url
+```shell
+curl --location --request GET 'http://localhost:3000/oOJ/q7x/disable/'
+```
+###### Response
+```js
+{
+  "response": false
+}
+```
+
+##### Enable URL
+This endpoint enable an url
+```shell
+curl --location --request GET 'http://localhost:3000/oOJ/q7x/enable/'
+```
+###### Response
+```js
+{
+  "response": true
+}
+```
+
+##### Stats URL
+This endpoint shows the stats for the given url
+```shell
+curl --location --request GET 'http://localhost:3000/oOJ/q7x/stats/'
+```
+###### Response
+The http code sent is 400
+```js
+{
+  "total": 2,
+  "visits": [
+    {
+      "ip": "::1",
+      "date": "2020-05-17T03:23:22.319Z"
+    },
+    {
+      "ip": "::1",
+      "date": "2020-05-17T03:23:53.926Z"
+    }
+  ]
+}
+```
