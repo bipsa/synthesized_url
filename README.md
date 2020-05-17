@@ -6,9 +6,9 @@ The solution includes all different projects on a single repository.
 
 ### Server
 The server application uses NodeJS. As any other Node project, install dependencies first `npm install`. The available script are the following;
-`npm run dev` Runs the server to expose the API.
-`npm run test` Executes the available tests.
-`npm run fix` It just executes standard js to keep the code uniform.
+1. `npm run dev` Runs the server to expose the API.
+2. `npm run test` Executes the available tests.
+3. `npm run fix` It just executes standard js to keep the code uniform.
 
 #### Available endpoints
 The following endpoints are exposed:
@@ -23,6 +23,16 @@ Short the given URL. This is a post a request. It takes the following process:
 curl --location --request POST 'http://localhost:3000/shorten/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "url": "https://github.com/SBoudrias/Inquirer.js#readme"
+    "url": "https://github.com/bipsa/synthesized_url"
 }'
 ```
+###### Response
+```js
+{
+    "url": "http://localhost:3000/oOJ/q7x/"
+}
+```
+
+
+##### Short url
+Short the given URL. This is a post a request. It takes the following process:
