@@ -5,7 +5,7 @@ This test shorts a given URL. It provides a command-line interface to interact w
 The solution includes all different projects on a single repository.
 
 ### Server
-The server application uses NodeJS. As any other Node project, install dependencies first `npm install`. The available script are the following;
+The server application uses NodeJS. As any other Node project, install dependencies first `npm install`. The available script are the following:
 1. `npm run dev` Runs the server to expose the API.
 2. `npm run test` Executes the available tests.
 3. `npm run fix` It just executes standard js to keep the code uniform.
@@ -92,3 +92,10 @@ The http code sent is 400
   ]
 }
 ```
+
+### CLI
+The CLI application uses NodeJS. Also, install dependencies first `npm install`. The available commands are the following:
+1. `node index shorten https://facebook.com` Shrinks the given URL.
+2. `node index stats http://localhost:3000/rp7/Sxz/` Returns the stats from the given URL.
+3. `node index disable http://localhost:3000/rp7/Sxz/` Disables the URL.
+4. `node index enable http://localhost:3000/rp7/Sxz/` Enable the URL.
