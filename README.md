@@ -147,3 +147,8 @@ curl --location --request GET 'https://g6m381qxf5.execute-api.us-east-1.amazonaw
 1. Create the bucket and name it `synthesized-url`
 2. You don't need public access
 
+### TODO's
+1. Increase test coverage
+2. Standardize the AWS calls with the file system to reduce code.
+3. Script to upload everything to AWS
+4. Redirection issue on API Gateway
