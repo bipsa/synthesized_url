@@ -126,9 +126,11 @@ const scope = module.exports = {
   /**
    * Gets the shark url from the given domain and url
    */
-  getShrinkURL: async (domain, shrankDomain, url, shrankURL) => {
-    const persistedDomains = await scope.readDomainsFile()
+  getShrinkURL: async (domain, shrankDomain, url, shrankURL, persistedDomains) => {
     let internalPath = null
+    if (persistedDomains) {
+      persistedDomains = await scope.readDomainsFile()
+    }
     if (!persistedDomains[domain]) {
       await scope.addDomain(domain, shrankDomain, persistedDomains)
     } else {

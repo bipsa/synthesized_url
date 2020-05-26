@@ -39,7 +39,7 @@ const scope = module.exports = {
   status: (url) => {
     let status = null
     if (scope.validateURL(url)) {
-      url = shrinkURL(url)
+      url = (url)
     }
     status = statusURL(url)
     return status
