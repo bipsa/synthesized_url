@@ -3,7 +3,8 @@
 const {
   shorten, stats, status,
   disable, enable, view
-} = require('./components')
+} = require('./url-shortener')
+
 const express = require('express')
 const parser = require('body-parser')
 

@@ -3,7 +3,7 @@
 const {
   shrinkURL, statsURL, statusURL,
   changeStatusURL, visitURL, getURL
-} = require('./synthesize')
+} = require('./shortener')
 const domain = process.env.domain || 'http://localhost:3000'
 
 const scope = module.exports = {
@@ -38,9 +38,6 @@ const scope = module.exports = {
    */
   status: (url) => {
     let status = null
-    if (scope.validateURL(url)) {
-      url = (url)
-    }
     status = statusURL(url)
     return status
   },
