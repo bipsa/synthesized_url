@@ -98,12 +98,7 @@ const shrinkURL = async (url) => {
   let domain = ''
   if (parts) {
     if (parts.length > 2) {
-      const domainPart = parts[3].split('.')
-      if (domainPart.length > 2) {
-        domain = `${domainPart[1]}.${domainPart[2]}`
-      } else {
-        domain = `${domainPart[0]}.${domainPart[1]}`
-      }
+      domain = parts[3].replace(/\//g, '')
       const persistedDomains = await readDomainsFile()
       if (!persistedDomains[domain]) {
         shrankDomain = createAndValidateValue(persistedDomains)
