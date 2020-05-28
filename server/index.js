@@ -3,7 +3,8 @@
 const {
   shorten, stats, status,
   disable, enable, view
-} = require('./components')
+} = require('./url-shortener')
+
 const express = require('express')
 const parser = require('body-parser')
 
@@ -34,39 +35,27 @@ app.get(/^\/(.{1,3})\/(.{1,3})\/(?:\/(?=$))?$/i, async (request, res) => {
   }
 })
 
-app.get(/^\/(.{1,3})\/(.{1,3})\/stats\/?$/i, async (request, res) => {
+app.get(/^\/(.{1,3})\/(.{1,3})\/(stats|enable|disable)\/?$/i, async (request, res) => {
   const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const response = await stats(normalizedURL)
+  const action = request.params[2].trim()
+  let response = null
+  console.log(this[request.params[2]])
+  if (action === 'stats') {
+    response = await stats(normalizedURL)
+  } else {
+    if (action === 'disable') {
+      response = await disable(normalizedURL)
+    } else {
+      response = await enable(normalizedURL)
+    }
+    if (response !== null) {
+      return res.send({
+        response
+      })
+    }
+  }
   if (response) {
     return res.send(response)
-  }
-  res.status(404)
-  return res.send({
-    message: 'URL was not found.'
-  })
-})
-
-app.get(/^\/(.{1,3})\/(.{1,3})\/enable\/?$/i, async (request, res) => {
-  const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const response = await enable(normalizedURL)
-  if (response !== null) {
-    return res.send({
-      response
-    })
-  }
-  res.status(404)
-  return res.send({
-    message: 'URL was not found.'
-  })
-})
-
-app.get(/^\/(.{1,3})\/(.{1,3})\/disable\/?$/i, async (request, res) => {
-  const normalizedURL = `${request.params[0]}/${request.params[1]}`
-  const response = await disable(normalizedURL)
-  if (response !== null) {
-    return res.send({
-      response
-    })
   }
   res.status(404)
   return res.send({

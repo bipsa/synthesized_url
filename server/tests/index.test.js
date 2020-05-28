@@ -1,6 +1,6 @@
 'use strict'
 
-const { validateURL } = require('./index')
+const { validateURL } = require('../url-shortener')
 
 test('Validate a valid url', () => {
   expect(validateURL('https://www.skillshare.com/')).toBe(true)

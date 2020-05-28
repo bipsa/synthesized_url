@@ -1,6 +1,6 @@
 'use strict'
 
-const { shorten, stats, view, status, enable, disable} = require('./components')
+const { shorten, stats, view, status, enable, disable } = require('./url-shortener')
 
 exports.handler = async (event, context, callback) => {
   const action = (event.path.params.path.action) ? event.path.params.path.action : null
@@ -40,7 +40,7 @@ exports.handler = async (event, context, callback) => {
     const normalizedURL = `${event.path.params.path.domain}/${event.path.params.path.url}`
     const response = await enable(normalizedURL)
     if (response) {
-      return {response}
+      return { response }
     }
   } else if (action === 'disable') {
     const normalizedURL = `${event.path.params.path.domain}/${event.path.params.path.url}`
